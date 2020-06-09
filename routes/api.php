@@ -21,7 +21,6 @@ Route::get('/verified-only', function (Request $request) {
     dd('you are verified', $request->user()->name);
 })->middleware('auth:api', 'verified');
 
-
 Route::post('/login', 'API\AuthController@login');
 
 Route::post('/register', 'API\AuthController@register');
@@ -31,4 +30,6 @@ Route::post('/password/reset', 'API\ResetPasswordController@reset');
 Route::get('/email/resend', 'API\VerificationController@resend')->name('verification.resend');
 Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->name('verification.verify');
 
-Route::apiResource('/tasks','API\TasksController')->middleware('auth:api');
+// Route::get('/tasks', 'API\TasksController@index');
+Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
+// Route::apiResource('tasks', 'API\TasksController');

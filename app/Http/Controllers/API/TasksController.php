@@ -13,7 +13,7 @@ class TasksController extends Controller
 {
     public function index()
     {
-        return TaskResource::collection(auth()->user()->tasks()->with('creator')->latest()->paginate(4));
+        return TaskResource::collection(auth()->user()->tasks()->with('creator')->latest()->paginate(3));
     }
     public function store(Request $request)
     {
@@ -37,9 +37,9 @@ class TasksController extends Controller
     {$request->validate([
         'title' => 'required|max:255',
     ]);
-          $input=$request->all();
-        if($request->has('due')){
-            $input['due']=carbon::parse($request->due)->toDateTimeString();
+        $input = $request->all();
+        if ($request->has('due')) {
+            $input['due'] = carbon::parse($request->due)->toDateTimeString();
 
         }
         $task->update($input);
