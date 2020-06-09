@@ -38,3 +38,19 @@ Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->na
 
 //group of routes related to the to do list
 Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
+
+//List Location coordinates
+Route::get('location','LocationController@index');
+
+//list a single user location
+Route::get('location/{id}','LocationController@show');
+
+//create location values
+Route::post('location','LocationController@store');
+
+//update location coordinates
+Route::put('location/{id}','LocationController@store');
+
+//delete the location values
+
+Route::delete('location/{id}','LocationController@destroy');
