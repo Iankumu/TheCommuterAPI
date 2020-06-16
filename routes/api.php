@@ -33,3 +33,9 @@ Route::put('location/{id}','LocationController@store');
 //delete the location values
 
 Route::delete('location/{id}','LocationController@destroy');
+
+//current weather
+Route::get('currentWeather/{id}', 'WeatherApiController@currentWeather');
+//weather forcast
+Route::get('forcastWeather/{id}', 'WeatherApiController@forcastWeather');
+
