@@ -54,3 +54,9 @@ Route::put('location/{id}','LocationController@store');
 //delete the location values
 
 Route::delete('location/{id}','LocationController@destroy');
+
+Route::post('navigation',"NavigationController@store");
+
+Route::get('navigation','CallbackController@index');
+
+Route::get('navigation',"NavigationController@index");

@@ -25,6 +25,8 @@ class LocationController extends Controller
 
         $email = $request->input("email");
 
+//        $email ="g@gmail.com";
+
         $user_id =$this->getSingleUser($email);
 
         $location->id = $request->input('id');
@@ -32,10 +34,14 @@ class LocationController extends Controller
         $location->longitude = $request->input('longitude');
         $location->user_id=$request->input('user_id',"$user_id");
 
+//        $check_user =$this->checkIfExists($user_id);
 
-        if($location->save())
-        {
-            return new LocationResource($location);
+//        DB::table('locations')->where('user_id', $user_id)->update('votes' => 1);
+
+
+
+        if($location->save()){
+           return new LocationResource($location);
         }
 
     }
@@ -59,10 +65,17 @@ class LocationController extends Controller
     }
 
     public function getSingleUser($email){
-//        $email = Request::input("email");
-//        $email = "k@kmail.com";
+
         $result = DB::table('users')->select('id')->where('email', $email)->first();
 
         return $result->id;
     }
+
+//    public function checkIfExists($user_id){
+//
+//        $user = DB::table('locations')->where('user_id', '=',$user_id)->first();
+//
+//
+//        return $user->id;
+//    }
 }
