@@ -59,4 +59,10 @@ Route::post('navigation',"NavigationController@store");
 
 Route::get('navigation','CallbackController@index');
 
-Route::get('navigation',"NavigationController@index");
+//current weather
+Route::get('currentWeather', 'WeatherContoller@currentWeather');
+//weather forcast
+Route::get('forcastWeather', 'WeatherContoller@forcastWeather');
+
+Route::post('weather',"WeatherContoller@getPostData");
+

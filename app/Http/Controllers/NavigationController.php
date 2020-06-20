@@ -5,34 +5,36 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class NavigationController extends Controller
 {
 
-
+    private $response;
 
     public function store(Request $request)
     {
 
 //        $currentLatitude = "-0.2971293";
 //        $currentLongitude = "36.0572179";
-//        $destinationLongitude = "36.0567195";
-//        $destinationLatitude = "-0.2954219";
-        $destinationLatitude = $request->input("destinationLatitude");
-        $destinationLongitude = $request->input("destinationLongitude");
+        $destinationLongitude = "36.0567195";
+        $destinationLatitude = "-0.2954219";
+//        $destinationLatitude = $request->input("destinationLatitude");
+//        $destinationLongitude = $request->input("destinationLongitude");
 
-        $email = $request->input("email");
+//        $email = $request->input("email");
 
-//        $email = "g@gmail.com";
+        $email = "g@gmail.com";
 
         $user_id=$this->getSingleUser($email);
 
         $currentLatitude = $this->getSingleUserLatitude($user_id);
         $currentLongitude = $this->getSingleUserLongitude($user_id);
 
+        $this->response= (new CallbackController)->index($currentLongitude,$currentLatitude,$destinationLongitude,$destinationLatitude);
 
-        return (new CallbackController)->index($currentLongitude,$currentLatitude,$destinationLongitude,$destinationLatitude);
+        return  $this->response;
 
     }
 
@@ -56,8 +58,9 @@ class NavigationController extends Controller
         return $result->longitude;
     }
 
-    public function index(){
-
-
-    }
+//    public function index(){
+//
+//
+//
+//    }
 }
