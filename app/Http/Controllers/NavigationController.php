@@ -5,37 +5,31 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class NavigationController extends Controller
 {
-
-    private $response;
-
     public function store(Request $request)
     {
-
-//        $currentLatitude = "-0.2971293";
-//        $currentLongitude = "36.0572179";
         $destinationLongitude = "36.0567195";
         $destinationLatitude = "-0.2954219";
-//        $destinationLatitude = $request->input("destinationLatitude");
-//        $destinationLongitude = $request->input("destinationLongitude");
-
-//        $email = $request->input("email");
-
         $email = "g@gmail.com";
 
-        $user_id=$this->getSingleUser($email);
+//        $destinationLatitude = $request->input("destinationLatitude");
+//        $destinationLongitude = $request->input("destinationLongitude");
+//        $email = $request->input("email");
 
+
+        $user_id = $this->getSingleUser($email);
         $currentLatitude = $this->getSingleUserLatitude($user_id);
         $currentLongitude = $this->getSingleUserLongitude($user_id);
 
-        $this->response= (new CallbackController)->index($currentLongitude,$currentLatitude,$destinationLongitude,$destinationLatitude);
+        $response =  (new CallbackController)->index($currentLongitude, $currentLatitude, $destinationLongitude, $destinationLatitude);
 
-        return  $this->response;
-
+        return Redirect::action('NavigationController@receiveData',$response);
+//        return  $response;
     }
 
     public function getSingleUser($email){
@@ -44,7 +38,6 @@ class NavigationController extends Controller
 
         return $result->id;
     }
-
     public function getSingleUserLatitude($user_id){
 
         $result = DB::table('locations')->select('latitude')->where('user_id', $user_id)->first();
@@ -58,9 +51,9 @@ class NavigationController extends Controller
         return $result->longitude;
     }
 
-//    public function index(){
-//
-//
-//
-//    }
+    public function receiveData(Request $request){
+
+        return $request;
+    }
+
 }

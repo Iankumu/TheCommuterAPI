@@ -22,6 +22,7 @@ Route::get('/verified-only', function (Request $request) {
 })->middleware('auth:api', 'verified');
 
 Route::post('/login', 'API\AuthController@login');
+
 Route::post('/register', 'API\AuthController@register');
 
 //request to reset password...=>gives token  to eneble password reset..requres just the email as part of the body
@@ -39,6 +40,15 @@ Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->na
 //group of routes related to the to do list
 Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
 
+//current weather
+Route::get('currentWeather', 'WeatherContoller@currentWeather');
+
+//weather forecast
+Route::get('forecastWeather', 'WeatherContoller@forecastWeather');
+
+//get data from android side using the post method
+Route::post('weather',"WeatherContoller@getPostData");
+
 //List Location coordinates
 Route::get('location','LocationController@index');
 
@@ -52,17 +62,16 @@ Route::post('location','LocationController@store');
 Route::put('location/{id}','LocationController@store');
 
 //delete the location values
-
 Route::delete('location/{id}','LocationController@destroy');
 
-Route::post('navigation',"NavigationController@store");
+//receive parameters from android ,call the get method for mapbox and return the data to android in GeoJson format
+Route::post("navigation","NavigationController@store");
 
+//get GeoJson data from mapbox using get request
 Route::get('navigation','CallbackController@index');
 
-//current weather
-Route::get('currentWeather', 'WeatherContoller@currentWeather');
-//weather forcast
-Route::get('forcastWeather', 'WeatherContoller@forcastWeather');
+//passing the data got from mapbox to android
+Route::get('navigations','NavigationController@receiveData');
 
-Route::post('weather',"WeatherContoller@getPostData");
+
 
