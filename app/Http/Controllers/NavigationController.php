@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\Http\PostCaller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -28,8 +29,11 @@ class NavigationController extends Controller
 
         $response =  (new CallbackController)->index($currentLongitude, $currentLatitude, $destinationLongitude, $destinationLatitude);
 
-        return Redirect::action('NavigationController@receiveData',$response);
-//        return  $response;
+//        return Redirect::action('NavigationController@receiveData',$response);
+        return Redirect::route( 'mapbox' )->with( [ 'response' => $response ]);
+
+//        return $response;
+
     }
 
     public function getSingleUser($email){
@@ -51,9 +55,10 @@ class NavigationController extends Controller
         return $result->longitude;
     }
 
-    public function receiveData(Request $request){
-
-        return $request;
+    public function receiveData(){
+         $response=Session::get( 'response' );
+         return response($response,200)->header('Content-Type',"application/json");
     }
+
 
 }

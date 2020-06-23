@@ -71,7 +71,7 @@ Route::post("navigation","NavigationController@store");
 Route::get('navigation','CallbackController@index');
 
 //passing the data got from mapbox to android
-Route::get('navigations','NavigationController@receiveData');
+Route::get('navigations','NavigationController@receiveData')->name('mapbox');
 
 
 

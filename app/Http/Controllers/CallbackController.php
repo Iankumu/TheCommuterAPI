@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\PostCaller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
@@ -23,6 +24,8 @@ class CallbackController extends Controller
         return Http::get("$url")->json();
 
     }
+
+
 
 
 }
