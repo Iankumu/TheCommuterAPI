@@ -66,3 +66,6 @@ Route::get('forcastWeather', 'WeatherContoller@forcastWeather');
 
 Route::post('weather',"WeatherContoller@getPostData");
 
+
+//profile
+Route::get('profile', ['middleware' => 'auth', 'uses' => 'API\UsersController@updateProfile']);
