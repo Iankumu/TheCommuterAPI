@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\PostCaller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Symfony\Component\Console\Input\Input;
 
 class CallbackController extends Controller
 {
@@ -19,4 +24,8 @@ class CallbackController extends Controller
         return Http::get("$url")->json();
 
     }
+
+
+
+
 }
