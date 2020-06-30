@@ -13,8 +13,8 @@ class WeatherContoller extends Controller
         // receive coordinates parameter
         $apikey='707906ec3450c314df9e5f4ec92f72d1';
 
-        $email = "g@gmail.com";
-//        $email = $this->getPostData();
+//        $email = "g@gmail.com";
+        $email = $this->getPostData();
         $user_id = $this->getSingleUser($email);
 
         $lat=$this->getSingleUserLatitude($user_id);
