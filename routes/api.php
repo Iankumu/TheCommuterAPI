@@ -40,14 +40,13 @@ Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->na
 //group of routes related to the to do list
 Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
 
-//current weather
-Route::get('currentWeather', 'WeatherContoller@currentWeather');
 
 //weather forecast
-Route::get('forecastWeather', 'WeatherContoller@forecastWeather');
+Route::Post('forecastWeather', 'WeatherContoller@forecastWeather')->middleware('auth:api');
 
 //get data from android side using the post method
-Route::post('weather',"WeatherContoller@getPostData");
+Route::post('currentWeather',"WeatherContoller@currentWeather")->middleware('auth:api');
+
 
 //List Location coordinates
 Route::get('location','LocationController@index');
@@ -77,4 +76,6 @@ Route::get('navigations','NavigationController@receiveData')->name('mapbox');
 
 
 //profile
-Route::get('profile', ['middleware' => 'auth', 'uses' => 'API\UsersController@updateProfile']);
+// Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
+
+Route::apiResource('profile', 'API\UsersController')->middleware('auth:api');

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Resources\UsersResource;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 class UsersController extends Controller
 {
     /**
@@ -12,68 +15,27 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateProfile()
-    {
+    public function index()
+    {  $id = Auth::user()->id;
         if (Auth::user())
         {
-            return response(['message' => 'hello person']);
+            $user=User::all()->where('id',$id);
+            return response()->json(['data'=>$user]);
         }
-     
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+   public function update(Request $request, User $user)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|max:55',
+            'email' => 'email|required',
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        ]);
+            $input = $request->all();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            $user->update($input);
+            return response()->json(['data'=>$user]);
     }
 
     /**

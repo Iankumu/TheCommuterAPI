@@ -6,32 +6,44 @@ use App\Location;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\TaskResource;
 class WeatherContoller extends Controller
 {
-    public function apiConnect(){
-        // receive coordinates parameter
+    public function apiConnect(Request $request){
+
+        $id = Auth::user()->id;
         $apikey='707906ec3450c314df9e5f4ec92f72d1';
+        $validator= $this->validate($request, [
+            'longitude' => 'required|max:255',
+            'latitude'=>'required|max:255'
+        ]);
+        // if ($validator->fails()) {
 
-        $email = "g@gmail.com";
-//        $email = $this->getPostData();
-        $user_id = $this->getSingleUser($email);
 
-        $lat=$this->getSingleUserLatitude($user_id);
-        $lon=$this->getSingleUserLongitude($user_id);
+        //         return response()->json(array(
+        //             'success' => false,
+        //             'message' => 'There are incorect values in the form!',
+        //             'errors' => $validator->getMessageBag()->toArray()
+        //         ), 422);
 
-//        $lat = $location->latitude;
-//        $lon = $location->longitude;
+        // }
+        $lon=$request->input('longitude');
+        $lat=$request->input('latitude');
+
+
         $url="https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&%20exclude=hourly,daily&appid=$apikey";
         $arr=file_get_contents($url);
-        //api return values
+
         $apires=json_decode($arr);
 
         return $apires;
+
     }
-    public function currentWeather(){
+
+    public function currentWeather(Request $request){
         //call to api
-        $apiret=$this->apiConnect();
+        $apiret=$this->apiConnect($request);
 
         //check site below for api parameter list
         //https://openweathermap.org/api/one-call-api
@@ -56,13 +68,13 @@ class WeatherContoller extends Controller
             "description" => $description,
             "icon"  =>  $icon,
         );
-        return json_encode($weather_data);
 
+        return response()->json(['data'=>$weather_data]);
     }
-    public function forecastWeather(){
+    public function forecastWeather(Request $request){
 
         //call to api
-        $apiret=$this->apiConnect();
+        $apiret=$this->apiConnect($request);
 
         //7 day weather data from api populated into array
         for($i=1; $i<=7; $i++){
@@ -86,31 +98,10 @@ class WeatherContoller extends Controller
                 "icon"  =>  $icon,
             );
         }
-        return json_encode($weather_data);
+        // return json_encode($weather_data);
+        // return response()->json(['data'=>$weather_data]);
+        return new TaskResource($weather_data);
     }
 
-    public function getSingleUser($email){
 
-        $result = DB::table('users')->select('id')->where('email', $email)->first();
-
-        return $result->id;
-    }
-    public function getSingleUserLatitude($user_id){
-
-        $result = DB::table('locations')->select('latitude')->where('user_id', $user_id)->first();
-        return $result->latitude;
-    }
-    public function getSingleUserLongitude($user_id){
-
-        $result = DB::table('locations')->select('longitude')->where('user_id', $user_id)->first();
-
-
-        return $result->longitude;
-    }
-
-    public function getPostData(){
-        //you can get the email from the android sharedprefs
-        return Request::input("email");
-
-    }
 }

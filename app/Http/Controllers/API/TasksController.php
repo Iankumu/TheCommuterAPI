@@ -33,6 +33,8 @@ class TasksController extends Controller
     {
         return new TaskResource($task->load('creator'));
     }
+
+
     public function update(Request $request, Task $task)
     {$request->validate([
         'title' => 'required|max:255',
