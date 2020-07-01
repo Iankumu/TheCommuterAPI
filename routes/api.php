@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,14 +64,17 @@ Route::put('location/{id}','LocationController@store');
 //delete the location values
 Route::delete('location/{id}','LocationController@destroy');
 
-//receive parameters from android ,call the get method for mapbox and return the data to android in GeoJson format
+//receive parameters from android
 Route::post("navigation","NavigationController@store");
 
-//get GeoJson data from mapbox using get request
-Route::get('navigation','CallbackController@index');
+//get GeoJson data from mapbox using get request and return the GeoJson object to android
+//Route::get('navigation','NavigationController@index')->name('mapbox');
 
-//passing the data got from mapbox to android
-Route::get('navigations','NavigationController@receiveData')->name('mapbox');
+Route::get('navigation','NavigationController@index');
+
+//Route::get('navigations','NavigationController@getResponse')->name('mapbox');
+
+
 
 
 
