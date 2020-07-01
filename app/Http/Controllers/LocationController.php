@@ -8,7 +8,7 @@ use App\Http\Resources\LocationResource as LocationResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
 class LocationController extends Controller
 {
     public function index()
@@ -21,10 +21,10 @@ class LocationController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { $email=Auth::user()->email;
         $location = $request->isMethod('PUT') ? Location::findOrFail ($request->id) : new Location;
 
-        $email = $request->input("email");
+        // $email = $request->input("email");
 
 //        $email ="g@gmail.com";
 

@@ -17,7 +17,7 @@ class CreateNavigationsTable extends Migration
             $table->id();
             $table->double('current_latitude');
             $table->double('current_longitude');
-            $table->double('destination_longitude');
+            $table->double('destination_latitude');
             $table->double('destination_longitude');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');

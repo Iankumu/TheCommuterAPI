@@ -56,13 +56,11 @@ Route::get('location','LocationController@index');
 Route::get('location/{id}','LocationController@show');
 
 //create location values
-Route::post('location','LocationController@store');
+Route::post('location','LocationController@store')->middleware('auth:api');
 
-//update location coordinates
-Route::put('location/{id}','LocationController@store');
 
-//delete the location values
-Route::delete('location/{id}','LocationController@destroy');
+
+
 
 //receive parameters from android
 Route::post("navigation","NavigationController@store");

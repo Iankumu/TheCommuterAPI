@@ -21,7 +21,6 @@ class WeatherContoller extends Controller
         // if ($validator->fails()) {
 
 
-<<<<<<< HEAD
         //         return response()->json(array(
         //             'success' => false,
         //             'message' => 'There are incorect values in the form!',
@@ -31,11 +30,6 @@ class WeatherContoller extends Controller
         // }
         $lon=$request->input('longitude');
         $lat=$request->input('latitude');
-=======
-//        $email = "g@gmail.com";
-        $email = $this->getPostData();
-        $user_id = $this->getSingleUser($email);
->>>>>>> de5d86846be268b30bfbc2fa0bdf264ee53e7d2a
 
 
         $url="https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&%20exclude=hourly,daily&appid=$apikey";
