@@ -41,43 +41,24 @@ Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->na
 //group of routes related to the to do list
 Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
 
-
 //weather forecast
 Route::Post('forecastWeather', 'WeatherContoller@forecastWeather')->middleware('auth:api');
 
 //get data from android side using the post method
 Route::post('currentWeather',"WeatherContoller@currentWeather")->middleware('auth:api');
 
-
 //List Location coordinates
 Route::get('location','LocationController@index');
-
-//list a single user location
-Route::get('location/{id}','LocationController@show');
 
 //create location values
 Route::post('location','LocationController@store')->middleware('auth:api');
 
-
-
-
-
 //receive parameters from android
-Route::post("navigation","NavigationController@store");
+Route::post("navigation","NavigationController@store")->middleware('auth:api');
 
 //get GeoJson data from mapbox using get request and return the GeoJson object to android
-//Route::get('navigation','NavigationController@index')->name('mapbox');
-
-Route::get('navigation','NavigationController@index');
-
-//Route::get('navigations','NavigationController@getResponse')->name('mapbox');
-
-
-
-
-
+Route::get('navigation','NavigationController@index')->middleware('auth:api');
 
 //profile
 // Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
-
 Route::apiResource('profile', 'API\UsersController')->middleware('auth:api');

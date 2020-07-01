@@ -21,13 +21,11 @@ class LocationController extends Controller
     }
 
     public function store(Request $request)
-    { $email=Auth::user()->email;
+    {
+
         $location = $request->isMethod('PUT') ? Location::findOrFail ($request->id) : new Location;
 
-        // $email = $request->input("email");
-
-//        $email ="g@gmail.com";
-
+        $email=Auth::user()->email;
         $user_id =$this->getSingleUser($email);
 
         $location->id = $request->input('id');
@@ -35,43 +33,17 @@ class LocationController extends Controller
         $location->longitude = $request->input('longitude');
         $location->user_id=$request->input('user_id',"$user_id");
 
-
         $check_user =$this->checkIfExists($user_id);
 
-
-
         if ($check_user<1){
-            if($location->save()){
-                return new LocationResource($location);
-            }
-
+            $location->save();
         }
         else
         {
             DB::table('locations')->where('user_id', $user_id)->update(['latitude'=>$location->latitude,
                 'longitude'=>$location->longitude]);
-
-
         }
-
-    }
-
-    public function show($id)
-    {
-        //Get a single location value
-        $location = Location::findOrFail($id);
-
-        //Return the single location as a resource
         return new LocationResource($location);
-    }
-    public function destroy($id)
-    {
-        //Get a single location value
-        $location = Location::findOrFail($id);
-
-        if($location->delete()){
-        return new LocationResource($location);
-        }
     }
 
     public function getSingleUser($email){
@@ -80,7 +52,6 @@ class LocationController extends Controller
 
         return $result->id;
     }
-
     public function checkIfExists($user_id){
 
         $user = DB::table('locations')->where('user_id',$user_id)->count();
