@@ -69,7 +69,7 @@ class WeatherContoller extends Controller
             "icon"  =>  $icon,
         );
 
-        return response()->json(['data'=>$weather_data]);
+        return new TaskResource($weather_data);
     }
     public function forecastWeather(Request $request){
 
