@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,11 +26,39 @@ Route::post('/login', 'API\AuthController@login');
 
 Route::post('/register', 'API\AuthController@register');
 
-Route::post('/password/email', 'API\ForgotPasswordController@sendResetLinkEmail');
+//request to reset password...=>gives token  to eneble password reset..requres just the email as part of the body
+Route::post('/password/requestpassreset', 'API\ForgotPasswordController@sendResetLinkEmail');
+
+//use the token given to reset the password to reset the password..requires password , password_confirmation, email ,and email provided token to reset
 Route::post('/password/reset', 'API\ResetPasswordController@reset');
-Route::get('/email/resend', 'API\VerificationController@resend')->name('verification.resend');
+
+//sends an email to verify your email
+Route::get('/email/verifysend', 'API\VerificationController@resend')->name('verification.resend');
+
+//back up link incase the verify send route gives users trouble to verify...it will sent by default as an autofilled link contained in the email
 Route::get('/email/verify/{id}/{hash}', 'API\VerificationController@verify')->name('verification.verify');
 
-// Route::get('/tasks', 'API\TasksController@index');
+//group of routes related to the to do list
 Route::apiResource('tasks', 'API\TasksController')->middleware('auth:api');
-// Route::apiResource('tasks', 'API\TasksController');
+
+//weather forecast
+Route::Post('forecastWeather', 'WeatherContoller@forecastWeather')->middleware('auth:api');
+
+//get data from android side using the post method
+Route::post('currentWeather',"WeatherContoller@currentWeather")->middleware('auth:api');
+
+//List Location coordinates
+Route::get('location','LocationController@index');
+
+//create location values
+Route::post('location','LocationController@store')->middleware('auth:api');
+
+//receive parameters from android
+Route::post("navigation","NavigationController@store")->middleware('auth:api');
+
+//get GeoJson data from mapbox using get request and return the GeoJson object to android
+Route::get('navigation','NavigationController@index')->middleware('auth:api');
+
+//profile
+// Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
+Route::apiResource('profile', 'API\UsersController')->middleware('auth:api');
