@@ -26,7 +26,7 @@ Route::post('/login', 'API\AuthController@login');
 
 Route::post('/register', 'API\AuthController@register');
 
-//request to reset password...=>gives token  to eneble password reset..requres just the email as part of the body
+//request to reset password...=>gives token  to enable password reset..requires just the email as part of the body
 Route::post('/password/requestpassreset', 'API\ForgotPasswordController@sendResetLinkEmail');
 
 //use the token given to reset the password to reset the password..requires password , password_confirmation, email ,and email provided token to reset
