@@ -25,6 +25,7 @@ class LocationController extends Controller
         $email=Auth::user()->email;
         $user_id =$this->getSingleUser($email);
 
+//        $location->id = $request->input('id');
         $location->latitude = $request->input('latitude');
         $location->longitude = $request->input('longitude');
         $location->user_id=$request->input('user_id',"$user_id");

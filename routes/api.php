@@ -59,6 +59,9 @@ Route::post("navigation","NavigationController@store")->middleware('auth:api');
 //get GeoJson data from mapbox using get request and return the GeoJson object to android
 Route::get('navigation','NavigationController@index')->middleware('auth:api');
 
+//return destination coordinates to android to help build the navigation launcher
+Route::get('coordinates','NavigationController@getCoordinates')->middleware('auth:api');
+
 //profile
 // Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
 Route::apiResource('profile', 'API\UsersController')->middleware('auth:api');

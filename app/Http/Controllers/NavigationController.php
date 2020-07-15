@@ -69,6 +69,23 @@ class NavigationController extends Controller
         return Http::get("$url")->json();
 
     }
+
+    public function getCoordinates(){
+        $email = Auth::user()->email;
+        $user_id = $this->getSingleUser($email);
+        $currentLatitude = $this->getCurrentLatitude($user_id);
+        $currentLongitude = $this->getCurrentLongitude($user_id);
+
+        $destinationLatitude = $this->getDestinationLatitude($user_id);
+        $destinationLongitude = $this->getDestinationLongitude($user_id);
+
+        $array = [$currentLatitude,$currentLongitude,$destinationLatitude,$destinationLongitude];
+
+
+        return new NavigationResource($array);
+
+
+    }
     public function getSingleUser($email){
 
         $result = DB::table('users')->select('id')->where('email', $email)->first();
