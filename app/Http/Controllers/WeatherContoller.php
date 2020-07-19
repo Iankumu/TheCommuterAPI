@@ -13,7 +13,7 @@ class WeatherContoller extends Controller
     public function apiConnect(Request $request){
 
         $id = Auth::user()->id;
-        $apikey=env('OPEN_WEATHER_MAP');
+        $apikey='707906ec3450c314df9e5f4ec92f72d1';
         $validator= $this->validate($request, [
             'longitude' => 'required|max:255',
             'latitude'=>'required|max:255'
