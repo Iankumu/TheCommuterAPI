@@ -10,5 +10,11 @@
         <property name="serverTimezone" value="UTC" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="PostgreSQL - thecommuterapi@localhost" uuid="519f4570-92a3-414d-9a18-60a382147448">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/thecommuterapi</jdbc-url>
+    </data-source>
   </component>
 </project>

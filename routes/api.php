@@ -26,7 +26,7 @@ Route::post('/login', 'API\AuthController@login');
 
 Route::post('/register', 'API\AuthController@register');
 
-//request to reset password...=>gives token  to eneble password reset..requres just the email as part of the body
+//request to reset password...=>gives token  to enable password reset..requires just the email as part of the body
 Route::post('/password/requestpassreset', 'API\ForgotPasswordController@sendResetLinkEmail');
 
 //use the token given to reset the password to reset the password..requires password , password_confirmation, email ,and email provided token to reset
@@ -58,6 +58,9 @@ Route::post("navigation","NavigationController@store")->middleware('auth:api');
 
 //get GeoJson data from mapbox using get request and return the GeoJson object to android
 Route::get('navigation','NavigationController@index')->middleware('auth:api');
+
+//return destination coordinates to android to help build the navigation launcher
+Route::get('coordinates','NavigationController@getCoordinates')->middleware('auth:api');
 
 //profile
 // Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
