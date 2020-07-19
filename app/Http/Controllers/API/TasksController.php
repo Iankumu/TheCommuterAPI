@@ -30,7 +30,7 @@ class TasksController extends Controller
         return new TaskResource($task->load('creator'));
     }
     public function show(Task $task)
-    {
+    {  // return response()->json(['data'=>$weather_data]);
         return new TaskResource($task->load('creator'));
     }
 
@@ -49,7 +49,7 @@ class TasksController extends Controller
 
     }
     public function destroy(Task $task)
-    {$task - delete();
+    {$task ->delete();
         return response(['message' => 'deleted']);
 
     }
