@@ -20,7 +20,8 @@ class UsersController extends Controller
         if (Auth::user())
         {
             $user=User::all()->where('id',$id);
-            return response()->json(['data'=>$user]);
+            // return response()->json(['data'=>$user]);
+            return new UsersResource($user);
         }
 
     }
