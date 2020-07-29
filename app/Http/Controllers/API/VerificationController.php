@@ -31,7 +31,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/success/email-verified';
 
     /**
      * Create a new controller instance.
@@ -67,7 +67,8 @@ class VerificationController extends Controller
             return $response;
         }
 
-       return response(['message' => 'Successfully verified']);
+//       return response(['message' => 'Successfully verified']);
+        return  redirect('success/email-verified');
 
     }
 
