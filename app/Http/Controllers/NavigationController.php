@@ -68,6 +68,7 @@ class NavigationController extends Controller
 
         return Http::get("$url")->json();
 
+
     }
 
     public function getCoordinates(){

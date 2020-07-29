@@ -29,7 +29,8 @@ class ForgotPasswordController extends Controller
         // return $request->wantsJson()
         //             ? new JsonResponse(['message' => trans($response)], 200)
         //             : back()->with('status', trans($response));
-        return response(['message'=>$response],200 );
+//        return response(['message'=>$response],200 );
+        return response(['message'=>$response]);
     }
 
     /**
@@ -37,12 +38,12 @@ class ForgotPasswordController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     protected function sendResetLinkFailedResponse(Request $request, $response)
     {
         return response(['error' => $response], 422);
 
     }
-    
+
 }
