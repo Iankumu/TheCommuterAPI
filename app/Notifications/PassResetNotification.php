@@ -5,7 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 
 class PassResetNotification extends Notification
 {
@@ -40,14 +40,17 @@ class PassResetNotification extends Notification
      */
     public function toMail($notifiable)
     {
-      $urlToResetForm = 'http:/vue-app/reset-password-form/?token=' . $this->token;
+        $urlToResetForm  = url(route('password.reset', [
+            'token' => $this->token,
+            'email' => $notifiable->getEmailForPasswordReset(),
+        ], false));
 
         return (new MailMessage)
             ->subject(Lang::get('Hi!,Reset Password Notification'))
             ->line(Lang::get('Your are receiving this email because we received a password reset request for your account.'))
             ->action(Lang::get('Reset Password'), $urlToResetForm)
             ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
-            ->line(Lang::get('If you did not request a password reset, no further action is required.Token:==>' . $this->token));
+            ->line(Lang::get('If you did not request a password reset, no further action is required.'));
 
     }
 
