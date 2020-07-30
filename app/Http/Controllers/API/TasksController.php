@@ -32,25 +32,6 @@ class TasksController extends Controller
     public function show(Task $task)
     {  // return response()->json(['data'=>$weather_data]);
         return new TaskResource($task->load('creator'));
-    }
 
 
-    public function update(Request $request, Task $task)
-    {$request->validate([
-        'title' => 'required|max:255',
-    ]);
-        $input = $request->all();
-        if ($request->has('due')) {
-            $input['due'] = carbon::parse($request->due)->toDateTimeString();
-
-        }
-        $task->update($input);
-        return new TaskResource($task->load('creator'));
-
-    }
-    public function destroy(Task $task)
-    {$task ->delete();
-        return response(['message' => 'deleted']);
-
-    }
-}
+    }}
