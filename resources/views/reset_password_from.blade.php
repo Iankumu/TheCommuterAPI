@@ -68,7 +68,7 @@
         <h2>Forgot Password?</h2>
         <h2>Create a new Password that you will not forget</h2>
 
-        <input name="email" placeholder="Enter email" value="{{request()->get('email')}}">
+        <input hidden name="email" placeholder="Enter email" value="{{request()->get('email')}}">
         <input type="password" name="password" placeholder="Enter new password">
         <input type="password" name="password_confirmation" placeholder="Confirm new password">
         <input hidden name="token" placeholder="token" value="{{request()->get('token')}}">
