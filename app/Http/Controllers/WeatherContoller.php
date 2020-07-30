@@ -106,7 +106,7 @@ class WeatherContoller extends Controller
     }
 
     public function search(){
-        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/nakuru.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
+        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/kisumu.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
         $response= Http::get("$url")->body();
         $data = json_decode($response,true);
         $coordinates=$data['features'][0]['geometry']['coordinates'];
@@ -118,23 +118,33 @@ class WeatherContoller extends Controller
     }
 
     public function getWeather($latitude,$longitude){
-        $url ="https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&%20exclude=hourly,daily&appid=$this->apikey";
+//        $url ="https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&%20exclude=hourly,daily&appid=$this->apikey";
 
         //The url below contains more current weather data including the city names
-        //$url ="https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$this->apikey";
+        $url ="https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$this->apikey";
 
         $arr=Http::get("$url")->body();
-        $apiret=json_decode($arr);
+        $apiret=json_decode($arr,true);
 
-        $city=$apiret->timezone;
-        $tempInK=$apiret->current->temp-273;
+
+        $city=$apiret['name'];
+        $tempInK=$apiret['main']['temp']-273;
         $temp=(int)$tempInK;
-        $feel=$apiret->current->feels_like-273;
+        $feel=$apiret['main']['feels_like']-273;
         $feels_like=(int)$feel;
-        $main=$apiret->current->weather[0]->main;
-        $description=$apiret->current->weather[0]->description;
-        $icon=$apiret->current->weather[0]->icon;
+        $main=$apiret['weather'][0]['main'];
+        $description=$apiret['weather'][0]['description'];
+        $icon=$apiret['weather'][0]['icon'];
 
+//        $city=$apiret->timezone;
+//        $tempInK=$apiret->current->temp-273;
+//        $temp=(int)$tempInK;
+//        $feel=$apiret->current->feels_like-273;
+//        $feels_like=(int)$feel;
+//        $main=$apiret->current->weather[0]->main;
+//        $description=$apiret->current->weather[0]->description;
+//        $icon=$apiret->current->weather[0]->icon;
+//
         $weather_data[] = array(
             "city"	=>  $city,
             "temp"	=>  $temp,
@@ -143,7 +153,6 @@ class WeatherContoller extends Controller
             "description" => $description,
             "icon"  =>  $icon,
         );
-
         return new WeatherResource($weather_data);
     }
 }
