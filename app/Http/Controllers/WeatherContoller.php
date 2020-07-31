@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherContoller extends Controller
 {
-    private  $apikey='707906ec3450c314df9e5f4ec92f72d1';
+    private $apikey='707906ec3450c314df9e5f4ec92f72d1';
+
     public function apiConnect(Request $request){
 
         // $email = Auth::user()->email;
@@ -25,7 +26,7 @@ class WeatherContoller extends Controller
 
         //         return response()->json(array(
         //             'success' => false,
-        //             'message' => 'There are incorect values in the form!',
+        //             'message' => 'There are incorrect values in the form!',
         //             'errors' => $validator->getMessageBag()->toArray()
         //         ), 422);
 
@@ -130,8 +131,8 @@ class WeatherContoller extends Controller
 
         $validator= $this->validate($request, [
             'location' => 'required|max:255'
-     
-        ]); 
+
+        ]);
 
         $location=$request->input('location');
         $url="https://api.mapbox.com/geocoding/v5/mapbox.places/$location.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
@@ -154,7 +155,7 @@ class WeatherContoller extends Controller
         $arr=Http::get("$url")->body();
         $apiret=json_decode($arr,true);
 
-
+        //retrieved from openweathermap current weather api
         $city=$apiret['name'];
         $tempInK=$apiret['main']['temp']-273;
         $temp=(int)$tempInK;
@@ -164,6 +165,7 @@ class WeatherContoller extends Controller
         $description=$apiret['weather'][0]['description'];
         $icon=$apiret['weather'][0]['icon'];
 
+        //retrieved from openweathermap one call api
 //        $city=$apiret->timezone;
 //        $tempInK=$apiret->current->temp-273;
 //        $temp=(int)$tempInK;
