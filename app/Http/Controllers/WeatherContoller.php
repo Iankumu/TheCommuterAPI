@@ -70,15 +70,6 @@ class WeatherContoller extends Controller
             "description" => $description,
             "icon"  =>  $icon,
         );
-
-        return new WeatherResource($weather_data);
-    }
-    public function forecastWeather(Request $request){
-
-        //call to api
-        $apiret=$this->apiConnect($request);
-
-        //7 day weather data from api populated into array
         for($i=1; $i<=7; $i++){
             $unixTimestamp=$apiret->daily[$i]->dt;
             $datetime = new DateTime("@$unixTimestamp");
@@ -91,7 +82,7 @@ class WeatherContoller extends Controller
             $description=$apiret->daily[$i]->weather[0]->description;
             $icon=$apiret->daily[$i]->weather[0]->icon;
 
-            $weather_data[] = array(
+            $weather_dataf[] = array(
                 "date"  =>  $date,
                 "temp"	=>  $temp,
                 "feels_like"  =>  $feels_like,
@@ -100,10 +91,40 @@ class WeatherContoller extends Controller
                 "icon"  =>  $icon,
             );
         }
-        // return json_encode($weather_data);
-        // return response()->json(['data'=>$weather_data]);
-        return new WeatherResource($weather_data);
+        $final_weather=array_merge($weather_dataf,$weather_data);
+        return new WeatherResource($final_weather);
     }
+    // public function forecastWeather(Request $request){
+
+    //     //call to api
+    //     $apiret=$this->apiConnect($request);
+
+    //     //7 day weather data from api populated into array
+    //     for($i=1; $i<=7; $i++){
+    //         $unixTimestamp=$apiret->daily[$i]->dt;
+    //         $datetime = new DateTime("@$unixTimestamp");
+    //         $date = $datetime->format('l');
+    //         $tempInK=$apiret->daily[$i]->temp->day-273;
+    //         $temp=(int)$tempInK;
+    //         $feel=$apiret->daily[$i]->feels_like->day-273;
+    //         $feels_like=(int)$feel;
+    //         $main=$apiret->daily[$i]->weather[0]->main;
+    //         $description=$apiret->daily[$i]->weather[0]->description;
+    //         $icon=$apiret->daily[$i]->weather[0]->icon;
+
+    //         $weather_data[] = array(
+    //             "date"  =>  $date,
+    //             "temp"	=>  $temp,
+    //             "feels_like"  =>  $feels_like,
+    //             "main"  =>  $main,
+    //             "description" => $description,
+    //             "icon"  =>  $icon,
+    //         );
+    //     }
+    //     // return json_encode($weather_data);
+    //     // return response()->json(['data'=>$weather_data]);
+    //     return new WeatherResource($weather_data);
+    // }
 
     public function search(Request $request){
 
