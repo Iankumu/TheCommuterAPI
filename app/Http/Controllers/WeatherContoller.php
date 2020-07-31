@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Location;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\TaskResource;
+use App\Http\Resources\WeatherResource;
+use Illuminate\Support\Facades\Http;
+
 class WeatherContoller extends Controller
 {
+    private  $apikey='707906ec3450c314df9e5f4ec92f72d1';
     public function apiConnect(Request $request){
 
-        $id = Auth::user()->id;
-        $apikey='707906ec3450c314df9e5f4ec92f72d1';
+        // $email = Auth::user()->email;
+       $apikey = $this->apikey;
         $validator= $this->validate($request, [
             'longitude' => 'required|max:255',
             'latitude'=>'required|max:255'
@@ -69,7 +71,7 @@ class WeatherContoller extends Controller
             "icon"  =>  $icon,
         );
 
-        return new TaskResource($weather_data);
+        return new WeatherResource($weather_data);
     }
     public function forecastWeather(Request $request){
 
@@ -100,8 +102,57 @@ class WeatherContoller extends Controller
         }
         // return json_encode($weather_data);
         // return response()->json(['data'=>$weather_data]);
-        return new TaskResource($weather_data);
+        return new WeatherResource($weather_data);
     }
 
+    public function search(){
+        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/kisumu.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
+        $response= Http::get("$url")->body();
+        $data = json_decode($response,true);
+        $coordinates=$data['features'][0]['geometry']['coordinates'];
+        $longitude = $coordinates[0];
+        $latitude = $coordinates[1];
 
+        return $this->getWeather($latitude,$longitude);
+
+    }
+
+    public function getWeather($latitude,$longitude){
+//        $url ="https://api.openweathermap.org/data/2.5/onecall?lat=$latitude&lon=$longitude&%20exclude=hourly,daily&appid=$this->apikey";
+
+        //The url below contains more current weather data including the city names
+        $url ="https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$this->apikey";
+
+        $arr=Http::get("$url")->body();
+        $apiret=json_decode($arr,true);
+
+
+        $city=$apiret['name'];
+        $tempInK=$apiret['main']['temp']-273;
+        $temp=(int)$tempInK;
+        $feel=$apiret['main']['feels_like']-273;
+        $feels_like=(int)$feel;
+        $main=$apiret['weather'][0]['main'];
+        $description=$apiret['weather'][0]['description'];
+        $icon=$apiret['weather'][0]['icon'];
+
+//        $city=$apiret->timezone;
+//        $tempInK=$apiret->current->temp-273;
+//        $temp=(int)$tempInK;
+//        $feel=$apiret->current->feels_like-273;
+//        $feels_like=(int)$feel;
+//        $main=$apiret->current->weather[0]->main;
+//        $description=$apiret->current->weather[0]->description;
+//        $icon=$apiret->current->weather[0]->icon;
+//
+        $weather_data[] = array(
+            "city"	=>  $city,
+            "temp"	=>  $temp,
+            "feels_like"  =>  $feels_like,
+            "main"  =>  $main,
+            "description" => $description,
+            "icon"  =>  $icon,
+        );
+        return new WeatherResource($weather_data);
+    }
 }

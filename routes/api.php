@@ -65,3 +65,5 @@ Route::get('coordinates','NavigationController@getCoordinates')->middleware('aut
 //profile
 // Route::get('profile', ['middleware' => 'auth:api', 'uses' => 'API\UsersController@updateProfile']);
 Route::apiResource('profile', 'API\UsersController')->middleware('auth:api');
+
+Route::get('searchWeather','WeatherContoller@search');
