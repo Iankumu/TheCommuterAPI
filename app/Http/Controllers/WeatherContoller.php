@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherContoller extends Controller
 {
-    private  $apikey='707906ec3450c314df9e5f4ec92f72d1';
+    private $apikey='707906ec3450c314df9e5f4ec92f72d1';
+
     public function apiConnect(Request $request){
 
         $email = Auth::user()->email;
@@ -25,7 +26,7 @@ class WeatherContoller extends Controller
 
         //         return response()->json(array(
         //             'success' => false,
-        //             'message' => 'There are incorect values in the form!',
+        //             'message' => 'There are incorrect values in the form!',
         //             'errors' => $validator->getMessageBag()->toArray()
         //         ), 422);
 
@@ -105,8 +106,10 @@ class WeatherContoller extends Controller
         return new WeatherResource($weather_data);
     }
 
-    public function search(){
-        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/kisumu.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
+    public function search(Request $request){
+
+        $city = $request->get('city');
+        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/$city.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
         $response= Http::get("$url")->body();
         $data = json_decode($response,true);
         $coordinates=$data['features'][0]['geometry']['coordinates'];
@@ -126,7 +129,7 @@ class WeatherContoller extends Controller
         $arr=Http::get("$url")->body();
         $apiret=json_decode($arr,true);
 
-
+        //retrieved from openweathermap current weather api
         $city=$apiret['name'];
         $tempInK=$apiret['main']['temp']-273;
         $temp=(int)$tempInK;
@@ -136,6 +139,7 @@ class WeatherContoller extends Controller
         $description=$apiret['weather'][0]['description'];
         $icon=$apiret['weather'][0]['icon'];
 
+        //retrieved from openweathermap one call api
 //        $city=$apiret->timezone;
 //        $tempInK=$apiret->current->temp-273;
 //        $temp=(int)$tempInK;

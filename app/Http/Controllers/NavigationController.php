@@ -46,7 +46,6 @@ class NavigationController extends Controller
             ]);
         }
 
-
         return new NavigationResource($navigation);
 
     }
@@ -62,12 +61,10 @@ class NavigationController extends Controller
         $destinationLatitude = $this->getDestinationLatitude($user_id);
         $destinationLongitude = $this->getDestinationLongitude($user_id);
 
-//        $access_token = env('MAPBOX_ACCESS_TOKEN');
         $access_token = $this->access_token;
         $url = "https://api.mapbox.com/directions/v5/mapbox/driving/".$currentLongitude.','.$currentLatitude.';'.$destinationLongitude.','.$destinationLatitude.'?alternatives=true&steps=true&banner_instructions=true&voice_instructions=true&voice_units=metric&geometries=geojson&access_token=' .$access_token;
 
         return Http::get("$url")->json();
-
 
     }
 
@@ -82,9 +79,7 @@ class NavigationController extends Controller
 
         $array = [$currentLatitude,$currentLongitude,$destinationLatitude,$destinationLongitude];
 
-
         return new NavigationResource($array);
-
 
     }
     public function getSingleUser($email){
@@ -130,8 +125,7 @@ class NavigationController extends Controller
 
     public function checkIfExists($user_id){
 
-        $user = DB::table('navigations')->where('user_id',$user_id)->count();
-        return $user;
+        return DB::table('navigations')->where('user_id',$user_id)->count();
 
     }
 
