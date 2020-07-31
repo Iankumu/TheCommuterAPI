@@ -13,7 +13,7 @@ class TasksController extends Controller
 {
     public function index()
     {
-        return TaskResource::collection(auth()->user()->tasks()->with('creator')->latest());
+        return TaskResource::collection(auth()->user()->tasks()->with('creator')->latest()->paginate(50));
     }
     public function store(Request $request)
     {
