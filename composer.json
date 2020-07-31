@@ -15,12 +15,8 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.5",
         "laravel/framework": "^7.0",
-<<<<<<< HEAD
-        "laravel/passport": "^9.3",
-=======
         "laravel/helpers": "^1.2",
         "laravel/passport": "^9.2",
->>>>>>> fe85170998482ecfaedb2ae666ad845c5f9e30be
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "nesbot/carbon": "^2.37"
