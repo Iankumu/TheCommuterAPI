@@ -105,8 +105,15 @@ class WeatherContoller extends Controller
         return new WeatherResource($weather_data);
     }
 
-    public function search(){
-        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/kisumu.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
+    public function search(Request $request){
+
+        $validator= $this->validate($request, [
+            'location' => 'required|max:255'
+     
+        ]); 
+
+        $location=$request->input('location');
+        $url="https://api.mapbox.com/geocoding/v5/mapbox.places/$location.json?access_token=pk.eyJ1IjoiYnJpYW5rYXJhbmphIiwiYSI6ImNrOWlrZ2syYTAzdWEzbXA1ZWF2MjhhOWUifQ.aK6j8l690k6E8hFQa9VYKQ";
         $response= Http::get("$url")->body();
         $data = json_decode($response,true);
         $coordinates=$data['features'][0]['geometry']['coordinates'];
