@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class WeatherController extends Controller
 {
-    private string $apikey = '707906ec3450c314df9e5f4ec92f72d1';
+    private $apikey = '707906ec3450c314df9e5f4ec92f72d1';
 
     //gets user's coordinates from an android device
     public function currentWeather(Request $request){
