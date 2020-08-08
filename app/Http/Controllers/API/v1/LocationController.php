@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Location;
 use App\Http\Resources\LocationResource as LocationResource;
@@ -25,7 +26,6 @@ class LocationController extends Controller
         $email=Auth::user()->email;
         $user_id =$this->getSingleUser($email);
 
-//        $location->id = $request->input('id');
         $location->latitude = $request->input('latitude');
         $location->longitude = $request->input('longitude');
         $location->user_id=$request->input('user_id',"$user_id");
@@ -53,8 +53,7 @@ class LocationController extends Controller
     }
     public function checkIfExists($user_id){
 
-        $user = DB::table('locations')->where('user_id',$user_id)->count();
-        return $user;
+        return DB::table('locations')->where('user_id',$user_id)->count();
 
     }
 

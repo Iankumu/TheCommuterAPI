@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use App\Location;
+use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\WeatherResource;
 use Illuminate\Support\Facades\Http;
 
@@ -16,7 +15,7 @@ class WeatherController extends Controller
     //gets user's coordinates from an android device
     public function currentWeather(Request $request){
 
-         $this->validate($request, [
+        $this->validate($request, [
             'longitude' => 'required|max:255',
             'latitude'=>'required|max:255'
         ]);
@@ -30,7 +29,7 @@ class WeatherController extends Controller
     //used for fetching location coordinates from a search query
     public function search(Request $request){
 
-         $this->validate($request, [
+        $this->validate($request, [
             'location' => 'required|max:255'
         ]);
 
@@ -53,7 +52,7 @@ class WeatherController extends Controller
         $apiret = $this->open_weather_current($latitude, $longitude);
         $forecast_data = $this->open_weather_forecast($latitude, $longitude);
 
-
+        //decodes the json response to get the current weather
         $city = $apiret['name'];
         $tempInK = $apiret['main']['temp'] - 273;
         $temp = (int)$tempInK;
@@ -71,6 +70,7 @@ class WeatherController extends Controller
             "description" => $description,
             "icon" => $icon,
         );
+        //decodes the json response to get the 7 day weather forecast
         for ($i = 1; $i <= 7; $i++) {
             $unixTimestamp = $forecast_data->daily[$i]->dt;
             $datetime = new DateTime("@$unixTimestamp");

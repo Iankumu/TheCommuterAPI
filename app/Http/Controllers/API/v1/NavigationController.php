@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\NavigationResource;
 use App\Navigation;
 use Illuminate\Http\Request;
@@ -128,7 +129,6 @@ class NavigationController extends Controller
         return DB::table('navigations')->where('user_id',$user_id)->count();
 
     }
-
 
 
 }

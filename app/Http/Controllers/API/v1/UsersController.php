@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
 use App\User;
@@ -13,7 +13,7 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return UsersResource
      */
     public function index()
     {  $id = Auth::user()->id;
@@ -26,17 +26,17 @@ class UsersController extends Controller
 
     }
 
-   public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|max:55',
             'email' => 'email|required',
 
         ]);
-            $input = $request->all();
+        $input = $request->all();
 
-            $user->update($input);
-            return response()->json(['data'=>$user]);
+        $user->update($input);
+        return response()->json(['data'=>$user]);
     }
 
     /**
