@@ -21,11 +21,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/success', function (){
         return view('success');
 });
+Route::get('/forgot', function (){
+    return view('reset_password_from');
+})->name('password.reset_password');
+
 Route::get('/success/email-verified', function (){
     return view('success_email_verify');
 });
 
-Route::view('forgot_password', 'reset_password_from')->name('password.reset');
+

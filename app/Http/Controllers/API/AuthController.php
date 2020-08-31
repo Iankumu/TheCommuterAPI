@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         ]);
         if (!auth()->attempt($loginData)) {
-            return response(['messge' => 'invalid credentials']);
+            return response(['message' => 'invalid credentials']);
 
         }
         $user = Auth::user();

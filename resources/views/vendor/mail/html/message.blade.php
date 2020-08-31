@@ -7,6 +7,7 @@
 @endslot
 
 {{-- Body --}}
+<img src="{{asset('logo/favicon.png')}}" alt="My Commuter Logo" style="margin: auto">
 {{ $slot }}
 
 {{-- Subcopy --}}

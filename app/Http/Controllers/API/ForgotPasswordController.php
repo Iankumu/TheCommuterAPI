@@ -30,7 +30,7 @@ class ForgotPasswordController extends Controller
         //             ? new JsonResponse(['message' => trans($response)], 200)
         //             : back()->with('status', trans($response));
 //        return response(['message'=>$response],200 );
-        return response(['message'=>$response]);
+        return response(['message'=>trans("$response")]);
     }
 
     /**
@@ -42,7 +42,7 @@ class ForgotPasswordController extends Controller
      */
     protected function sendResetLinkFailedResponse(Request $request, $response)
     {
-        return response(['error' => $response], 422);
+        return response(['error' => trans($response)], 422);
 
     }
 
