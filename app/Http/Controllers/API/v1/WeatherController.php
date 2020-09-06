@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Resources\WeatherResource;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
 
 class WeatherController extends Controller
 {
@@ -93,7 +94,9 @@ class WeatherController extends Controller
             );
         }
         $final_weather_data = array_merge($current_weather_data,$forecast_weather_data);
-        return new WeatherResource($final_weather_data);
+        return (new WeatherResource($final_weather_data))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);//200
     }
 
     //gets the current weather of a place from open weather map api

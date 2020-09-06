@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
+
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -19,7 +22,7 @@ class AuthController extends Controller
         $validatedData['password'] = bcrypt($request->password);
         $user = User::create($validatedData);
         $accessToken = $user->createToken('authToken')->accessToken;
-        return response(['user' => $user, 'access_token' => $accessToken]);
+        return response(['user' => $user, 'access_token' => $accessToken],Response::HTTP_OK);//200
 
     }
 
@@ -32,7 +35,7 @@ class AuthController extends Controller
 
         ]);
         if (!auth()->attempt($loginData)) {
-            return response(['message' => 'invalid credentials']);
+            return response(['message' => 'invalid credentials'],Response::HTTP_UNAUTHORIZED);//401
 
         }
         $user = Auth::user();
@@ -40,7 +43,7 @@ class AuthController extends Controller
             $accessToken = auth()->user()->createToken('authToken')->accessToken;
             return response(['user' => auth()->user(), 'access_token' => $accessToken]);
         } else {
-            return response()->json(['error' => 'email is not verified'], 401);
+            return response()->json(['error' => 'email is not verified'], Response::HTTP_UNAUTHORIZED);//401
         }
 
     }

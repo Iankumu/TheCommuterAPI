@@ -1,27 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\UsersResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return UsersResource
-     */
+
     public function index()
     {  $id = Auth::user()->id;
         if (Auth::user())
         {
             $user=User::all()->where('id',$id);
-            // return response()->json(['data'=>$user]);
-            return new UsersResource($user);
+            return (new UsersResource($user))
+                ->response()
+                ->setStatusCode(Response::HTTP_OK);//200
         }
 
     }
@@ -36,15 +34,10 @@ class UsersController extends Controller
         $input = $request->all();
 
         $user->update($input);
-        return response()->json(['data'=>$user]);
+        return response()->json(['data'=>$user],Response::HTTP_OK);//200
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //

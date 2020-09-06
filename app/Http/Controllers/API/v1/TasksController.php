@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
@@ -8,6 +8,7 @@ use App\Task;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TasksController extends Controller
 {
@@ -27,11 +28,15 @@ class TasksController extends Controller
 
         }
         $task = auth()->user()->tasks()->create($input);
-        return new TaskResource($task->load('creator'));
+        return (new TaskResource($task->load('creator')))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);//201
     }
     public function show(Task $task)
     {
-        return new TaskResource($task->load('creator'));
+        return (new TaskResource($task->load('creator')))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
     public function update(Request $request, Task $task)
     {$request->validate([
@@ -43,12 +48,14 @@ class TasksController extends Controller
 
         }
         $task->update($input);
-        return new TaskResource($task->load('creator'));
+        return (new TaskResource($task->load('creator')))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);//200
 
     }
     public function destroy(Task $task)
     {$task ->delete();
-        return response(['message' => 'deleted']);
+        return response(['message' => 'deleted'],Response::HTTP_NO_CONTENT);//204
 
     }
 }

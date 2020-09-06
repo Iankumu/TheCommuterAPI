@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NavigationResource;
@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class NavigationController extends Controller
@@ -47,7 +48,9 @@ class NavigationController extends Controller
             ]);
         }
 
-        return new NavigationResource($navigation);
+        return (new NavigationResource($navigation))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);//201
 
     }
 
@@ -80,7 +83,9 @@ class NavigationController extends Controller
 
         $array = [$currentLatitude,$currentLongitude,$destinationLatitude,$destinationLongitude];
 
-        return new NavigationResource($array);
+        return (new NavigationResource($array))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);
 
     }
     public function getSingleUser($email){

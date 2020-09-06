@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,6 +8,8 @@ use App\Location;
 use App\Http\Resources\LocationResource as LocationResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
+
 class LocationController extends Controller
 {
     public function index()
@@ -16,7 +18,9 @@ class LocationController extends Controller
         $location = Location::paginate(10);
 
         //Return a collection of the coordinates
-        return LocationResource::collection($location);
+        return LocationResource::collection($location)
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);//200
     }
 
     public function store(Request $request)
@@ -42,7 +46,9 @@ class LocationController extends Controller
                 'longitude'=>$location->longitude
             ]);
         }
-        return new LocationResource($location);
+        return (new LocationResource($location))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);//201
     }
 
     public function getSingleUser($email){

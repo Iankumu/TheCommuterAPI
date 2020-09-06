@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ForgotPasswordController extends Controller
@@ -26,11 +27,7 @@ class ForgotPasswordController extends Controller
     use SendsPasswordResetEmails;
      protected function sendResetLinkResponse(Request $request, $response)
     {
-        // return $request->wantsJson()
-        //             ? new JsonResponse(['message' => trans($response)], 200)
-        //             : back()->with('status', trans($response));
-//        return response(['message'=>$response],200 );
-        return response(['message'=>trans("$response")]);
+        return response(['message'=>trans("$response")],Response::HTTP_OK);//200
     }
 
     /**
@@ -42,7 +39,7 @@ class ForgotPasswordController extends Controller
      */
     protected function sendResetLinkFailedResponse(Request $request, $response)
     {
-        return response(['error' => trans($response)], 422);
+        return response(['error' => trans($response)], Response::HTTP_UNPROCESSABLE_ENTITY);//422
 
     }
 

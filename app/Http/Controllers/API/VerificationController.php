@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
-
+use Symfony\Component\HttpFoundation\Response;
 
 
 class VerificationController extends Controller
@@ -25,19 +25,9 @@ class VerificationController extends Controller
      */
 
     use VerifiesEmails;
-
-    /**
-     * Where to redirect users after verification.
-     *
-     * @var string
-     */
     protected $redirectTo = '/success/email-verified';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->middleware('auth:api')->only('resend');
@@ -56,7 +46,7 @@ class VerificationController extends Controller
         }
 
         if ($request->user()->hasVerifiedEmail()) {
-            return response(['message'=>'Already Verified']);
+            return response(['message'=>'Already Verified'],Response::HTTP_OK);//200
         }
 
         if ($request->user()->markEmailAsVerified()) {
@@ -67,39 +57,28 @@ class VerificationController extends Controller
             return $response;
         }
 
-//       return response(['message' => 'Successfully verified']);
         return  redirect('success/email-verified');
 
     }
 
-    /**
-     * The user has been verified.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
+
     protected function verified(Request $request)
     {
         //
     }
 
-    /**
-     * Resend the email verification notification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     */
+
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return response(['message' => 'Already Verified']);
+            return response(['message' => 'Already Verified'],Response::HTTP_OK);//200
 
         }
 
         $request->user()->sendEmailVerificationNotification();
 
         return $request->wantsJson()
-        ? response(['message'=>'Email Sent'])
+        ? response(['message'=>'Email Sent'],Response::HTTP_OK)//200
         : back()->with('resent', true);
     }
 }

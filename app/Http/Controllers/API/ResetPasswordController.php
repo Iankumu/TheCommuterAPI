@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
-
+use Symfony\Component\HttpFoundation\Response;
 
 
 class ResetPasswordController extends Controller
@@ -25,9 +25,8 @@ class ResetPasswordController extends Controller
     protected function sendResetResponse(Request $request, $response)
     {
 
-//        return response(['message' => trans($response)],200);
+
         return  redirect('success');
-//        return response(['messages' => $response]);
 
     }
 
@@ -40,7 +39,7 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetFailedResponse(Request $request, $response)
     {
-        return response(['message' => trans($response)], 422);
+        return response(['message' => trans($response)], Response::HTTP_UNPROCESSABLE_ENTITY);//422
     }
 
     /**
